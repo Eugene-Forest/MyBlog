@@ -13,13 +13,31 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+import ablog
+import alabaster
 
+# -- ABlog Sidebars -------------------------------------------------------
+
+# There are seven sidebars you can include in your HTML output.
+# postcard.html provides information regarding the current post.
+# recentposts.html lists most recent five posts. Others provide
+# a link to a archive pages generated for each tag, category, and year.
+# In addition, there are authors.html, languages.html, and locations.html
+# sidebars that link to author and location archive pages.
+html_sidebars = {
+    '**': [ 'about.html',
+            'postcard.html', 'navigation.html',
+            'recentposts.html', 'tagcloud.html',
+            'categories.html',  'archives.html',
+            'searchbox.html',
+            ],
+    }
 
 # -- Project information -----------------------------------------------------
 # 项目名
-project = 'A Sphinx Book Template'
+project = 'MyBlog'
 # 版权，著作权
-copyright = '2022, Eugene Forest'
+copyright = '2023, Eugene Forest'
 # 作者
 author = 'Eugene Forest'
 
@@ -57,7 +75,10 @@ extensions = [
     "sphinx_design",
     "sphinx_copybutton",
     "sphinx_togglebutton",
+    'ablog',
+    'alabaster',
 ]
+myst_update_mathjax = False
 # "sphinx.ext.todo" : 对TODO项的支持
 # "sphinx.ext.intersphinx" :链接到其他项目的文档
 # "sphinx.ext.autosectionlabel" : label 标签自动选中确保唯一性,并允许引用节使用其标题,同时自动为标题创建label
@@ -141,76 +162,141 @@ templates_path = ['_templates']
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'zh_CN'
+language = 'zh'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+# 博客的过滤和搜索
+exclude_patterns = [
+    "posts/*/.ipynb_checkpoints/*",
+    ".github/*",
+    ".history",
+    "github_submodule/*",
+    "LICENSE.md",
+    "README.md",
+]
+blog_post_pattern = ["src/*.rst","src/*.md"]
 
+# -- Sphinx Options -----------------------------------------------------------
 
-# -- Options for HTML output -------------------------------------------------
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ["_templates", ablog.get_html_templates_path()]
+
+# The suffix(es) of source filenames.
+source_suffix = ".md"
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'sphinx'
+
+# A list of ignored prefixes for module index sorting.
+# modindex_common_prefix = []
+
+# If true, keep warnings as "system message" paragraphs in the built documents.
+# keep_warnings = False
+
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = "False"
+
+# -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-# 主题配置
-html_theme = "sphinx_book_theme"
-# 以下为 sphinx_book_theme 的主题配置/定制（sphinx_book_theme）
+html_theme = 'alabaster'
+
+# Theme options are theme-specific and customize the look and feel of a theme
+# further.  For a list of options available for each theme, see the
+# documentation.
 html_theme_options = {
-
-    # ----------------主题内容中导航栏的功能按钮配置--------
-    # 添加存储库链接
-    "repository_url": "https://github.com/Eugene-Forest/NoteBook",
-    # 添加按钮以链接到存储库
-    "use_repository_button": True,
-    # 要添加按钮以打开有关当前页面的问题
-    "use_issues_button": True,
-    # 添加一个按钮来建议编辑
-    "use_edit_page_button": True,
-    # 在导航栏添加一个按钮来切换全屏的模式。
-    "use_fullscreen_button": True,  # 默认 `True`
-    # 默认情况下，编辑按钮将指向master分支，但如果您想更改此设置，请使用以下配置
-    "repository_branch": "main",
-    # 默认情况下，编辑按钮将指向存储库的根目录；而我们 sphinx项目的 doc文件其实是在 source 文件夹下的，包括 conf.py 和 index(.rst) 主目录
-    "path_to_docs": "source",
-    # 您可以添加 use_download_button 按钮，允许用户以多种格式下载当前查看的页面
-    "use_download_button": True,
-
-    # --------------------------右侧辅助栏配置---------
-    # 重命名右侧边栏页内目录名，标题的默认值为Contents。
-    "toc_title": "导航",
-    # -- 在导航栏中显示子目录，向下到这里列出的深度。 ----
-    "show_toc_level": 2,
-
-    # --------------------------左侧边栏配置--------------
-    # -- 只显示标识，不显示 `html_title`，如果它存在的话。-----
-    "logo_only": True,
-    # 控制左侧边栏列表的深度展开,默认值为1，它仅显示文档的顶级部分
-    "show_navbar_depth": 1,
-    # 自定义侧边栏页脚,默认为 Theme by the Executable Book Project
-    # "extra_navbar": "<p>Your HTML</p>",
-    "home_page_in_toc": False,  # 是否将主页放在导航栏（顶部）
-
-    # ------------------------- 单页模式 -----------------
-    # 如果您的文档只有一个页面，并且您不需要左侧导航栏，那么您可以 使用以下配置将其配置sphinx-book-theme 为以单页模式运行
-    # "single_page": True,
-
-    # -- 在每个页面的页脚添加额外的 HTML。---
-    # "extra_footer": '',
+    'github_button': False,
 }
+
+# Add any paths that contain custom themes here, relative to this directory.
+html_theme_path = [alabaster.get_path()]
+
+# The name for this set of Sphinx documents.  If None, it defaults to
+# "<project> v<release> documentation".
+# html_title = None
+
+# A shorter title for the navigation bar.  Default is the same as html_title.
+# html_short_title = None
+
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+# html_logo = None
+
+# The name of an image file (within the static path) to use as favicon of the
+# docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
+# pixels large.
+# html_favicon = None
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-
 # 添加你自己的 CSS 规则
 html_static_path = ['_static']
 html_css_files = ["custom.css"]
 
-
 # 自定义徽标、和网站图标
 html_logo = "./_static/template.svg"
 html_favicon = "./_static/template.svg"
-# The name for this set of Sphinx documents.  If None, it defaults to
-# "<project> v<release> documentation".
-#html_title = None
+
+# Add any extra paths that contain custom files (such as robots.txt or
+# .htaccess) here, relative to this directory. These files are copied
+# directly to the root of the documentation.
+# html_extra_path = []
+
+# If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
+# using the given strftime format.
+# html_last_updated_fmt = '%%b %%d, %%Y'
+
+# If true, SmartyPants will be used to convert quotes and dashes to
+# typographically correct entities.
+# html_use_smartypants = True
+
+# Additional templates that should be rendered to pages, maps page names to
+# template names.
+# html_additional_pages = {}
+
+# If false, no module index is generated.
+# html_domain_indices = True
+
+# If false, no index is generated.
+# html_use_index = True
+
+# If true, the index is split into individual pages for each letter.
+# html_split_index = False
+
+# If true, links to the reST sources are added to the pages.
+# html_show_sourcelink = True
+
+# If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
+# html_show_sphinx = True
+
+# If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
+# html_show_copyright = True
+
+# If true, an OpenSearch description file will be output, and all pages will
+# contain a <link> tag referring to it.  The value of this option must be the
+# base URL from which the finished HTML is served.
+# html_use_opensearch = ''
+
+# This is the file name suffix for HTML files (e.g. ".xhtml").
+# html_file_suffix = None
+
+# Language to be used for generating the HTML full-text search index.
+# Sphinx supports the following languages:
+#   'da', 'de', 'en', 'es', 'fi', 'fr', 'hu', 'it', 'ja'
+#   'nl', 'no', 'pt', 'ro', 'ru', 'sv', 'tr'
+# html_search_language = 'en'
+
+# A dictionary with options for the search language support, empty by default.
+# Now only 'ja' uses this config value
+# html_search_options = {'type': 'default'}
+
+# The name of a javascript file (relative to the configuration directory) that
+# implements a search results scorer. If empty, the default will be used.
+# html_search_scorer = 'scorer.js'
+
+# Output file base name for HTML help builder.
+htmlhelp_basename = "MyBlogdoc"

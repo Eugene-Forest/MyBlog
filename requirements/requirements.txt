@@ -13,7 +13,8 @@ sphinx_design
 # sphinx-tabs
 sphinx_togglebutton
 # sphinxcontrib-mermaid
-# ablog
+ablog
+alabaster
 # sphinx_comments
 
 # markdown-it-py 的可扩展插件
