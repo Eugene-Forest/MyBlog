@@ -113,29 +113,6 @@ myst_dmath_double_inline = True
 # myst_dmath_allow_space = False, will cause inline math to only be parsed if there are no initial / final spaces, e.g. $a$ but not $ a$ or $a $.
 # myst_dmath_allow_digits = False, will cause inline math to only be parsed if there are no initial / final digits, e.g. $a$ but not 1$a$ or $a$2.
 
-# -- global replace order configuration are as follows---
-# 全局字符串替换指令
-# 需要注意的是，全局加入替换的功能要谨慎使用，要酌情使用；因为在这里添加后会影响到项目所有的 rst 文件（在所有 rst 文件中添加定义的替换指令）
-# 一串 reStructuredText，它将包含在每个读取的源文件的末尾。 这是一个可以添加应该在每个文件中可用的替换的地方
-rst_prolog = """
-.. |15| raw:: html
-      
-      <hr width='15%'>
-
-.. |30| raw:: html
-      
-      <hr width='30%'>
-      
-.. |50| raw:: html
-      
-      <hr width='50%'>
-
-.. |75| raw:: html
-      
-      <hr width='75%'>
-
-"""
-
 # 图片编号功能
 # -- numfig configuration are as follows---
 # 表格和代码块如果有标题则会自动编号
